@@ -1,17 +1,13 @@
-import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../../contexts/AuthContextProvider';
 import { setAuthTokens } from '../SpotifyService';
+import { getSessionTokens } from './AuthService';
 
-const RequireAuth = ({ children }: any): any => {
-    const { tokens } = useContext(AuthContext);
+const RequireAuth = ({ children }: any) => {
+    const sessionTokens = getSessionTokens();
 
-    const sessionTokens = sessionStorage.getItem('tokens') ?? '{}';
-    const parsedSessionTokens = JSON.parse(sessionTokens);
-
-    if ((tokens?.accessToken && tokens?.refreshToken) || (parsedSessionTokens?.accessToken && parsedSessionTokens?.refreshToken)) {
-        if (parsedSessionTokens?.accessToken && parsedSessionTokens?.refreshToken) {
-            setAuthTokens(parsedSessionTokens);
+    if (sessionTokens?.accessToken && sessionTokens?.refreshToken) {
+        if (sessionTokens?.accessToken && sessionTokens?.refreshToken) {
+            setAuthTokens(sessionTokens);
         }
 
         return children;

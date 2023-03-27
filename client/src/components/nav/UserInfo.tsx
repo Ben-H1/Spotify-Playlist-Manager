@@ -2,8 +2,8 @@ import { faCaretDown, faCaretUp, faUser } from '@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../contexts/AuthContextProvider';
-import { getMe, removeAuthTokens } from '../../services/SpotifyService';
+import { resetSessionTokens } from '../../services/AuthService/AuthService';
+import { getMe, resetAuthTokens } from '../../services/SpotifyService';
 import BlankPic from '../BlankPic';
 import DropdownDivider from '../dropdown/DropdownDivider';
 import DropdownItem from '../dropdown/DropdownItem';
@@ -14,8 +14,6 @@ import OpenInSpotifyIcon from '../OpenInSpotifyIcon';
 const UserInfo = () => {
     const navigate = useNavigate();
 
-    const { setTokens } = useContext(AuthContext);
-
     const [userInfo, setUserInfo] = useState<SpotifyApi.CurrentUsersProfileResponse | undefined>(undefined);
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
@@ -24,9 +22,8 @@ const UserInfo = () => {
     }, []);
 
     const handleLogout = () => {
-        removeAuthTokens();
-        setTokens(undefined);
-        sessionStorage.setItem('tokens', '{}');
+        resetAuthTokens();
+        resetSessionTokens();
         navigate('/login');
     };
 

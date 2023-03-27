@@ -8,7 +8,7 @@ export const setAuthTokens = (tokens: any): void => {
     spotifyClient.setRefreshToken(tokens.refreshToken);
 };
 
-export const removeAuthTokens = () => {
+export const resetAuthTokens = () => {
     spotifyClient.setAccessToken('');
     spotifyClient.setRefreshToken('');
 };
