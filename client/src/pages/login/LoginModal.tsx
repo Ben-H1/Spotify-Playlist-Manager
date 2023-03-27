@@ -11,7 +11,7 @@ type LoginModalProps = {
 
 const LoginModal = ({ handleLogin, isLoading }: LoginModalProps) => {
     return (
-        <Modal>
+        <Modal blur={false}>
             <div className='flex flex-col justify-center items-center'>
                 <div className='font-bold mb-2 text-2xl'>Spotify Playlist Manager</div>
                 {isLoading && <LoadingSpinner className='h-6' />}
