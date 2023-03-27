@@ -8,23 +8,14 @@ const getTimestamp = () => {
 
 const getMethodColor = (method: string) => ({
     'GET': chalk.yellow
-})[method];
+})[method] ?? chalk.white;
 
 const logRequest = (request: Request) => {
     const timestamp = getTimestamp();
 
-    const path = request.path;
-    const method = request.method;
-    const query = request.query;
-    const body = request.body;
+    const { path, method, query, body } = request;
 
     const methodColor = getMethodColor(method);
-
-    if (!methodColor) {
-        console.log(chalk.red(`Method "${method}" not registered on request logger.`));
-        console.log();
-        return;
-    }
 
     console.log(`[${timestamp}] [${methodColor(`${method} ${path}`)}]`);
 
