@@ -1,7 +1,7 @@
-import { faClose, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
-import { useRef } from 'react';
+import { useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 
 type SearchBoxProps = {
@@ -19,36 +19,35 @@ const SearchBox = ({ variant, className, inputClassName, searchIconClassName, cl
     const commonClasses = 'flex items-center';
     const inputCommonClasses = 'outline-none w-full bg-inherit';
     const searchIconCommonClasses = 'mr-2';
-    const clearIconCommonClasses = 'ml-2';
 
     let uniqueClasses = '';
     let inputUniqueClasses = '';
     let searchIconUniqueClasses = '';
-    let clearIconUniqueClasses = '';
 
     switch (variant) {
         case 'secondary': {
             uniqueClasses = 'bg-ui-grayscale-500 text-ui-grayscale-700 px-2 py-1 rounded-md';
             inputUniqueClasses = 'placeholder:text-ui-grayscale-700 placeholder:font-normal font-semibold';
             searchIconUniqueClasses = '';
-            clearIconUniqueClasses = '';
             break;
         }
         default: {
             uniqueClasses = 'bg-white pl-3 py-2 pr-4 rounded-full text-black';
             inputUniqueClasses = '';
             searchIconUniqueClasses = 'h-5';
-            clearIconUniqueClasses = 'h-5';
             break;
         }
     }
 
-    let ref = useRef() as any;
+    const [currentValue, setCurrentValue] = useState('');
 
-    const handleClear = () => {
-        ref.current.value = '';
-        searchHandler('');
-        ref.current.focus();
+    const handleChange = (e: any) => {
+        const value = e.target.value;
+
+        if (value !== currentValue) {
+            setCurrentValue(value);
+            searchHandler(value);
+        }
     };
 
     return (
@@ -60,14 +59,8 @@ const SearchBox = ({ variant, className, inputClassName, searchIconClassName, cl
             <DebounceInput
                 className={clsx(inputCommonClasses, inputUniqueClasses, inputClassName)}
                 debounceTimeout={500}
-                inputRef={ref}
-                onChange={(e) => searchHandler(e.target.value)}
+                onChange={handleChange}
             />
-            {true && <FontAwesomeIcon
-                className={clsx(clearIconCommonClasses, clearIconUniqueClasses, clearIconClassName)}
-                onClick={handleClear}
-                icon={faClose}
-            />}
         </div>
     );
 };
