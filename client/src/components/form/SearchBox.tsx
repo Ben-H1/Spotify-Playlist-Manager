@@ -48,6 +48,7 @@ const SearchBox = ({ variant, className, inputClassName, searchIconClassName, cl
     const handleClear = () => {
         ref.current.value = '';
         searchHandler('');
+        ref.current.focus();
     };
 
     return (
